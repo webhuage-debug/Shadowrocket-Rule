@@ -3,30 +3,47 @@ name: Validate configuration
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 3 * * 6'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  basic-check:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Check expected files
+      - name: Validate CN safety, structure, references and regex
+        run: bash scripts/validate-cn.sh
+      - name: Validate CN remote RULE-SET files
+        run: bash scripts/validate-cn.sh --remote-only
+      - name: Check repository and unoptimized configurations
         run: |
           test ! -e ianzo-rule.conf
-          for config in ianzo-cn.conf ianzo-full.conf ianzo-gfw.conf; do
+          for config in ianzo-full.conf ianzo-gfw.conf; do
             test -s "$config"
             grep -q '^\[General\]$' "$config"
+            grep -q '^\[Proxy\]$' "$config"
             grep -q '^\[Proxy Group\]$' "$config"
             grep -q '^\[Rule\]$' "$config"
-            grep -q '^FINAL,' "$config"
+            test "$(grep -c '^FINAL,' "$config")" -eq 1
             ! grep -q 'RULE-SET,https://[^,]*🎵' "$config"
-            ! grep -Eiq '(password|secret|token|private[_-]?key|订阅链接)' "$config"
+            ! grep -Eiq '(^|[[:space:],])(password|secret|token|api[-_]?key|private[-_]?key|cookie|authorization)[[:space:]]*=' "$config"
           done
           test -s README.md
           test -s LICENSE
-      - name: Check remote rule links
+          test -s SECURITY.md
+      - name: Check unoptimized configuration links
         run: |
-          for config in ianzo-cn.conf ianzo-full.conf ianzo-gfw.conf; do
+          for config in ianzo-full.conf ianzo-gfw.conf; do
             while IFS=, read -r _ url _; do
-              curl --fail --silent --show-error --location --retry 2 --max-time 20 "$url" >/dev/null
+              curl --fail --silent --show-error --location --retry 2 --max-time 30 "$url" >/dev/null
             done < <(grep '^RULE-SET,https://' "$config")
           done
