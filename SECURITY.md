@@ -20,6 +20,8 @@ CN 安全优化版遵循以下默认边界：
 
 CN 版不远程加载 JavaScript、Shell、Python、二进制程序或任何可执行资源。LingJingMaster 的 AI 补充与香港券商规则已从 CN 移除；FULL/GFW 仍是待后续审计的上游原版，依赖详情见 `docs/SOURCES.md`。
 
+仓库中的 `scripts/validate-cn.sh` 只用于 GitHub Actions 和维护者本地检查，不属于 Shadowrocket 配置依赖，不会通过 `update-url` 或 `RULE-SET` 下载到客户端执行。
+
 ## 供应链边界
 
 远程 RULE-SET 可在本仓库不变的情况下由上游更新。本项目只能审计引用地址、规则格式和某一时点的内容，无法保证上游未来永不误分流。敏感业务应固定出口并定期复核规则命中情况。
