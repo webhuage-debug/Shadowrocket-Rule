@@ -2,7 +2,7 @@
 
 面向普通用户长期使用的 Shadowrocket 安全精简分流配置。当前重点维护 **CN 平衡版**：国内服务直连，常用境外服务可独立选择出口，并默认关闭会解密 HTTPS 的功能。
 
-本项目 Fork 自 [ianzo0/Shadowrocket-Rule](https://github.com/ianzo0/Shadowrocket-Rule)，保留原作者贡献记录及 MIT License。V0.2.0 的安全优化由 `webhuage-debug` 维护，不代表原始项目全部由当前维护者原创。
+本项目 Fork 自 [ianzo0/Shadowrocket-Rule](https://github.com/ianzo0/Shadowrocket-Rule)，保留原作者贡献记录及 MIT License。V0.2.x 的安全优化由 `webhuage-debug` 维护，不代表原始项目全部由当前维护者原创。
 
 ## 安全边界
 
@@ -19,7 +19,7 @@
 
 | 配置 | 状态 | 适合用户 |
 | --- | --- | --- |
-| `ianzo-cn.conf` | **V0.2.0 华哥安全优化版，已完成首轮 iPhone 实机验证** | 大多数普通用户 |
+| `ianzo-cn.conf` | **V0.2.1 华哥安全优化版，已完成首轮 iPhone 实机验证** | 大多数普通用户 |
 | `ianzo-full.conf` | 上游原版，待后续安全优化 | 需要更多通用规则的用户 |
 | `ianzo-gfw.conf` | 上游原版，待后续安全优化 | 仅希望按 GFWList 分流的用户 |
 
@@ -72,9 +72,15 @@ https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-gf
 
 ## 使用前提示
 
-1. 当前 V0.2.0 已完成静态检查及首轮 iPhone 实机验证；不同节点、运营商和局域网环境仍可能存在差异，升级前建议保留上一版配置。
+1. 当前 V0.2.1 保持 V0.2.0 的分流逻辑，并新增仓库自动安全检查；不同节点、运营商和局域网环境仍可能存在差异，升级前建议保留上一版配置。
 2. 涉及账号风控的服务，请手动固定一条稳定节点，不要依赖自动测速频繁切换出口。
 3. 第三方 RULE-SET 会独立更新；下载成功不代表内容永远正确，出现误分流时应先停用对应规则并反馈。
+
+## 自动安全检查
+
+仓库在提交、Pull Request、手动触发及每周定时任务中自动检查 CN 配置的结构、策略引用、重复项、地区正则、安全边界、敏感字段、更新地址和 15 个远程 RULE-SET。检查程序只在 GitHub Actions 或维护者电脑上运行，不会被 Shadowrocket 下载或执行。
+
+维护者可通过 GitHub Actions 的 `Validate configuration` 工作流复查配置完整性，确保发布前的规则仍能通过自动验证。
 
 ## License 与上游来源
 
