@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — 2026-08-08
+
+- 保持 V0.2.0 的 CN 分流、DNS 与安全边界不变。
+- 新增可本地运行的 CN 自动验证脚本，检查配置区段、FINAL、策略引用、重复规则和重复远程地址。
+- 将香港、美国、日本、新加坡、台湾节点识别样本及 `RUS` 防误判样本纳入自动测试。
+- 自动阻止 CN 引入 Script、MITM、URL Rewrite、敏感字段或远程可执行资源。
+- 校验稳定版 `update-url`、15 个 GitHub Raw `.list` 来源及远程规则文本格式。
+- GitHub Actions 增加手动触发和每周定时检查，持续监测第三方规则可用性。
+
 ## 0.2.0 — 2026-08-08
 
 - 移除 CN 默认 MITM、HTTPS 解密及依赖 MITM 的 Google URL Rewrite。
