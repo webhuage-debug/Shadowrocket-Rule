@@ -6,8 +6,8 @@
 
 - 项目：<https://github.com/blackmatrix7/ios_rule_script>
 - 使用格式：仅引用 `rule/Shadowrocket/` 下各服务的专用 `.list` 文件。
-- 使用范围：OpenAI、Anthropic、Claude、GitHub、GitLab、Atlassian、YouTube、Netflix、Disney、Spotify、Google、TikTok、Facebook、Telegram、Twitter、Apple。
-- 使用方式：三份配置均通过 `RULE-SET` 远程引用；不复制或再发布该项目的规则内容。
+- 使用范围：CN V0.2.0 使用 OpenAI、Anthropic、Claude、GitHub、GitLab、YouTube、Netflix、Disney、Spotify、Google、TikTok、Facebook、Telegram、Twitter、Apple；FULL/GFW 原版还包含 Atlassian。
+- 使用方式：三份配置均通过 `RULE-SET` 远程引用；不复制或再发布该项目的规则内容。CN V0.2.0 将 YouTube 拆分为独立策略组。
 - 责任边界：上游项目有自己的免责声明和转载限制；本项目仅登记远程依赖，规则内容、许可证和维护状态以其上游仓库声明为准。
 
 ## Loyalsoldier/surge-rules
@@ -23,9 +23,9 @@
 ## LingJingMaster/Shadowrocket-Rules
 
 - 项目：<https://github.com/LingJingMaster/Shadowrocket-Rules>
-- 使用文件：`AI.list`、`HK_Broker.list`。
-- 使用范围：`AI.list` 作为 OpenAI、Anthropic、Claude 专用规则之外的 AI 服务补充，例如 xAI、Grok 等；`HK_Broker.list` 为香港券商相关域名提供独立分流。
-- 使用方式：三份配置均通过 `RULE-SET` 远程引用；香港券商规则默认使用香港节点，用户应按券商要求选择并长期使用稳定的单一节点；不复制或再发布这些文件内容。
+- 使用文件：未优化的 FULL/GFW 原版仍使用 `AI.list` 与 `HK_Broker.list`；CN V0.2.0 不再引用该项目。
+- 使用范围：`AI.list` 补充 xAI、Grok 等 AI 服务；`HK_Broker.list` 提供香港券商相关分流。两者仅存在于待后续优化的 FULL/GFW 原版。
+- 使用方式：通过 `RULE-SET` 远程引用，不复制或再发布这些文件内容。CN V0.2.0 因规则重叠、普通用户价值和供应链精简原则，已移除这两个依赖。
 - 责任边界：规则内容、许可证和维护状态以其上游仓库声明为准。
 
 ## 使用原则

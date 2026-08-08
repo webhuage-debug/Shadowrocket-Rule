@@ -1,133 +1,81 @@
-<div align="center">
+# Shadowrocket-Rule 华哥安全优化版
 
-# ianzo Rule
+面向普通用户长期使用的 Shadowrocket 安全精简分流配置。当前重点维护 **CN 平衡版**：国内服务直连，常用境外服务可独立选择出口，并默认关闭会解密 HTTPS 的功能。
 
-**为 Shadowrocket 准备的简洁、可更新的分流配置。**
+本项目 Fork 自 [ianzo0/Shadowrocket-Rule](https://github.com/ianzo0/Shadowrocket-Rule)，保留原作者贡献记录及 MIT License。V0.2.0 的安全优化由 `webhuage-debug` 维护，不代表原始项目全部由当前维护者原创。
 
-国内直连，境外服务按规则选择出口。没有节点、订阅地址或账号信息。
+## 安全边界
 
-`CN 平衡版` &nbsp;·&nbsp; `全量版` &nbsp;·&nbsp; `GFW 版`
+- 不提供节点、机场或订阅服务。
+- 不收集用户信息、账号、Cookie、Token 或节点信息。
+- 不包含 JavaScript、Python 或客户端远程执行脚本。
+- CN 默认版本不启用 MITM，不要求安装或信任 CA。
+- CN 默认版本不启用 URL Rewrite，不解密 HTTPS。
+- 远程依赖仅用于域名、IP 与 GeoIP 类分流规则；规则内容可随上游更新。
 
-</div>
+详细安全设计与第三方依赖边界见 [SECURITY.md](SECURITY.md)，规则来源见 [docs/SOURCES.md](docs/SOURCES.md)。
 
-<br>
+## 版本选择
 
-## 选择你的配置
+| 配置 | 状态 | 适合用户 |
+| --- | --- | --- |
+| `ianzo-cn.conf` | **V0.2.0 华哥安全优化版，已完成首轮 iPhone 实机验证** | 大多数普通用户 |
+| `ianzo-full.conf` | 上游原版，待后续安全优化 | 需要更多通用规则的用户 |
+| `ianzo-gfw.conf` | 上游原版，待后续安全优化 | 仅希望按 GFWList 分流的用户 |
 
-|  | CN 平衡版 · 推荐 | 全量版 | GFW 版 |
-| :--- | :--- | :--- | :--- |
-| **适合谁** | 希望导入后直接使用的大多数人 | 需要更多直连、代理、广告规则 | 只想代理 GFWList 命中的网站 |
-| **默认结果** | 国内直连，其余流量按服务分流后代理 | 完整规则集处理后再兜底 | GFWList 命中代理，其余直连 |
-| **本地规则 / 远程规则集** | 34 条 / 18 个 | 38 条 / 22 个 | 34 条 / 19 个 |
+> FULL 和 GFW 尚未完成本轮安全优化，仍保留原版 MITM、URL Rewrite 和上游更新地址，不应视为“华哥安全版”。
 
-<br>
+## 稳定版下载地址
 
-### CN 平衡版 · 推荐
+以下为稳定版地址。CN 配置内已启用同地址自动更新。
 
-日常最省心的选择。国内网络直连；AI、Google、流媒体、社交等服务由各自策略组处理。
-
-```text
-https://raw.githubusercontent.com/ianzo0/Shadowrocket-Rule/main/ianzo-cn.conf
-```
-
-<img src="assets/qr/ianzo-cn.png" width="160" alt="扫描导入 CN 平衡版" />
-
-<br>
-
-### 全量版
-
-增加私网、广告、直连、代理等上游规则集。规则更多，首次导入、更新编译与内存占用也相应更高。
+### CN 平衡版（本轮优化）
 
 ```text
-https://raw.githubusercontent.com/ianzo0/Shadowrocket-Rule/main/ianzo-full.conf
+https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-cn.conf
 ```
 
-<img src="assets/qr/ianzo-full.png" width="160" alt="扫描导入全量版" />
-
-<br>
-
-### GFW 版
-
-服务规则优先；其后仅将 GFWList 命中项交给“节点选择”，其余流量保持直连。
+### FULL 全量版（原版 / 待后续安全优化）
 
 ```text
-https://raw.githubusercontent.com/ianzo0/Shadowrocket-Rule/main/ianzo-gfw.conf
+https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-full.conf
 ```
 
-<img src="assets/qr/ianzo-gfw.png" width="160" alt="扫描导入 GFW 版" />
+### GFW 版（原版 / 待后续安全优化）
 
-<br>
-
-## 三步开始
-
-1. 复制上方地址，或使用 Shadowrocket 扫描对应二维码。
-2. 在 Shadowrocket 中选择“从 URL 下载配置”并导入。
-3. 默认即可使用；如需指定地区或固定出口，在对应策略组选择单一节点。
-
-每个文件都预置了自己的 `update-url`。之后在 Shadowrocket 中检查更新即可，无需重新找链接。
-
-> [!IMPORTANT]
-> AI、Google、Meta 与香港券商的“地区组”并不等于固定公网 IP。对 IP 极为敏感的服务，请在 Shadowrocket 中手动选择并长期使用一条具体节点。
-
-## 默认体验
-
-| 场景 | 默认处理 |
-| --- | --- |
-| 局域网、公共 Wi‑Fi 认证、微信本地回调 | 直连 |
-| Apple 消息推送 | 直连，独立于一般 Apple 服务 |
-| 国内网络 | 直连 |
-| AI、代码服务、Google、流媒体、TikTok、Meta、Telegram、X | 由独立策略组分流；默认跟随“节点选择”自动测速 |
-| 香港券商 | 默认香港节点；请按服务要求固定单一出口 |
-| 未命中流量 | CN / 全量版走“未命中的境外流量”；GFW 版直连 |
-
-## 规则如何工作
-
-规则按 `[Rule]` 内从上到下的顺序匹配，命中第一条后不再继续。服务分流优先于各版本的通用兜底规则。
-
-```mermaid
-flowchart TD
-  A["应用发起连接"] --> B["DNS：DoH 解析<br/>AliDNS → Cloudflare / Quad9 / Google"]
-  B --> C["本地优先规则<br/>局域网、Wi‑Fi 认证、微信、反向解析 → DIRECT"]
-  C --> D["服务分流<br/>AI、代码、香港券商、流媒体、Google、Meta、Telegram、X、Apple"]
-  D --> E{"选择配置版本"}
-  E --> CN["CN 平衡版"]
-  E --> FULL["全量版"]
-  E --> GFW["GFW 版"]
-  CN --> CN1["GEOIP,CN → 国内网络"]
-  CN1 --> CN2["其余 → 未命中的境外流量"]
-  FULL --> F1["私网直连 → 广告拦截 → 直连规则 → 代理规则 → GEOIP,CN"]
-  F1 --> F2["其余 → 未命中的境外流量"]
-  GFW --> G1["GFWList → 节点选择"]
-  G1 --> G2["其余 → DIRECT"]
+```text
+https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-gfw.conf
 ```
 
-<details>
-<summary><strong>网络、DNS 与 Fake‑IP 说明</strong></summary>
+## CN 版默认策略
 
-配置使用 AliDNS DoH，并以 Cloudflare、Quad9、Google DoH 作为回退；默认关闭 IPv6。`always-real-ip` 将局域网、公共 Wi‑Fi 认证、微信本地回调和 Apple 推送排除在 Fake‑IP 影响之外。不同网络、节点协议和 iOS 版本仍可能表现不同，建议先在自己的设备上验证。
+| 服务 | 默认出口 | 可否手动更改 |
+| --- | --- | --- |
+| ChatGPT、Claude 等 AI 服务 | 美国节点组 | 可以 |
+| YouTube | 香港节点组 | 可以 |
+| TikTok | 日本节点组 | 可以 |
+| Telegram | 新加坡节点组 | 可以 |
+| Google、GitHub、流媒体、Meta、X | 主节点选择 | 可以 |
+| Apple、Apple Push、国内服务 | DIRECT | 可以；Apple Push 固定直连 |
+| 未命中流量 | 主节点选择 | 可以 |
 
-</details>
+地区组依赖节点名称识别。如果订阅没有相应地区节点，或命名方式不在识别范围内，请在 Shadowrocket 中为业务策略手动选择可用节点。地区组是便捷默认值，不等于强制锁定国家或固定公网 IP。
 
-<details>
-<summary><strong>Google 重写与 HTTPS 解密</strong></summary>
+## DNS 与网络说明
 
-配置将 `g.cn`、`google.cn` 重定向至 `www.google.com`。HTTPS 重写需要在 Shadowrocket 生成、安装并在 iOS 设置中信任 CA 证书。MITM 范围只包含这两个域名及其子域；不需要此功能时，可删除或注释 `[URL Rewrite]` 与 `[MITM]` 段。
+- 主 DNS 使用 AliDNS DoH，备用使用 Cloudflare、Quad9 与 Google DoH。
+- 代理服务规则使用 `force-remote-dns`，降低受污染解析结果影响的概率。
+- 局域网、NAS、`.local`、`.lan`、`home.arpa`、公共 Wi-Fi 登录、微信本地回调与 Apple Push 已加入直连或真实 IP 例外。
+- 默认关闭 IPv6，以降低节点不支持 IPv6、双栈出口不一致或 IPv6 绕行带来的兼容性风险；需要 IPv6 的用户应在实机验证节点能力后自行开启。
+- `block-quic` 保持关闭，不全局破坏 Hysteria2、TUIC、QUIC、HTTP/3 或其他 UDP 流量。
+- DNS 服务商仍可看到其处理的域名查询；“加密 DNS”不等于完全匿名或绝对无泄漏。
 
-</details>
+## 使用前提示
 
-## 项目原则
+1. 当前 V0.2.0 已完成静态检查及首轮 iPhone 实机验证；不同节点、运营商和局域网环境仍可能存在差异，升级前建议保留上一版配置。
+2. 涉及账号风控的服务，请手动固定一条稳定节点，不要依赖自动测速频繁切换出口。
+3. 第三方 RULE-SET 会独立更新；下载成功不代表内容永远正确，出现误分流时应先停用对应规则并反馈。
 
-- 不提供代理节点、订阅服务或网络访问保证。
-- 不包含节点、账号、订阅地址、密码或证书。
-- 配置负责策略与顺序；服务域名/IP 数据以第三方 Shadowrocket 专用规则集远程引用。
-- 远程规则会随上游更新，因此其动态条数不作为固定承诺；全量版审计时引用的四份通用清单合计约 30.9 万条。
+## License 与上游来源
 
-规则来源、许可证和更新边界请查看 [来源说明](docs/SOURCES.md)；完整审计记录请查看 [审计报告](docs/AUDIT.md)。
-
-<br>
-
----
-
-<div align="center">
-  本仓库原创内容采用 <a href="LICENSE">MIT License</a>。请自行确认节点来源、当地法律和各服务使用条款。
-</div>
+本仓库继续采用 [MIT License](LICENSE)，原版权声明 `Copyright (c) 2026 ianzo` 保持不变。上游项目：<https://github.com/ianzo0/Shadowrocket-Rule>。

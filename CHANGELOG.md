@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0 — 2026-08-08
+
+- 移除 CN 默认 MITM、HTTPS 解密及依赖 MITM 的 Google URL Rewrite。
+- 修复美国节点裸 `US` 匹配导致 `RUS-01` 等名称误判的问题。
+- 为地区节点增加带边界的缩写识别，并兼容 HKG、JPN、SGP、TWN、TPE 及常见城市名称。
+- 为地区与自动测速组启用 `include-all-proxies=true`，确保能筛选用户已导入的订阅节点。
+- 精简 CN 普通用户策略组，删除小众“香港券商”策略与对应远程规则。
+- 将 YouTube 从综合流媒体中拆分，完善 AI、代码、Google、YouTube、流媒体、TikTok、Meta、Telegram、X 与 Apple 的独立策略。
+- 审计 CN 的 DNS、IPv6、局域网、公共 Wi-Fi、微信、Apple Push、UDP 与 QUIC 配置；补充 `.lan`、`home.arpa` 和 Apple Push 真实 IP 边界。
+- 审计 CN 远程 RULE-SET，保留 blackmatrix7 常用服务规则，移除重复度较高的 AI 补充规则和低频 Atlassian 依赖。
+- 将 CN 更新地址迁移至 `webhuage-debug/Shadowrocket-Rule` 并在稳定版启用。
+- 重写 README 安全说明并新增 `SECURITY.md`。
+- 完成首轮 iPhone 实机导入与核心分流验证。
+
 ## 0.1.3 — 2026-07-30
 
 - 配置文件统一移除 `-rule`：更名为 `ianzo-cn.conf`、`ianzo-full.conf` 和 `ianzo-gfw.conf`，并同步更新配置内更新地址、文档和自动化校验。
