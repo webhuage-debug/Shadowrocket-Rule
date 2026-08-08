@@ -80,6 +80,8 @@ https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-gf
 
 仓库在提交、Pull Request、手动触发及每周定时任务中自动检查 CN 配置的结构、策略引用、重复项、地区正则、安全边界、敏感字段、更新地址和 15 个远程 RULE-SET。检查程序只在 GitHub Actions 或维护者电脑上运行，不会被 Shadowrocket 下载或执行。
 
+维护者可通过 GitHub Actions 的 `Validate configuration` 工作流复查配置完整性，确保发布前的规则仍能通过自动验证。
+
 ## License 与上游来源
 
 本仓库继续采用 [MIT License](LICENSE)，原版权声明 `Copyright (c) 2026 ianzo` 保持不变。上游项目：<https://github.com/ianzo0/Shadowrocket-Rule>。
